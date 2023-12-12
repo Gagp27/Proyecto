@@ -1,0 +1,16 @@
+extends index
+block contenido
+    h1.pt-5.pb-3.text-center Historial de Ventas
+    table.table.table-striped
+    thead.table-dark
+        tr
+            th.col-1(scope='col') #
+            th.col-9(scope='col') Genero
+            th.col-1(scope='col')
+    tbody.table-group-divider
+        each genero in generos
+            tr
+                th.col-1(scope='row') #{genero.genero_id}
+                td.col-9 #{genero.genero}
+                td.col-1.text-center
+                    a.btn.btn-warning.btn-sm(href=`/generos/${genero.genero_id}`) Editar

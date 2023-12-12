@@ -1,51 +1,48 @@
 import Sequelize from 'sequelize';
 import { db } from '../config/db.js';
 
-export const Venta = db.define('ventas', {
-    venta_id: {
+export const DetalleVentaLibro = db.define('detalle_ventas_libros', {
+    detalle_id: {
         type: Sequelize.NUMBER,
         primaryKey: true
     },
-    cliente_id: {
+    transaccion_id: {
         type: Sequelize.NUMBER
     },
-    fecha_hora: {
-        type: Sequelize.DATE
-    },
-    total: {
+    libro_id: {
         type: Sequelize.NUMBER
     },
-    forma_de_pago: {
+    cantidad: {
         type: Sequelize.NUMBER
     },
-    monto_pagado: {
+    precio_unitario: {
         type: Sequelize.NUMBER
     },
-    vuelto: {
+    itbms_por_libro: {
         type: Sequelize.NUMBER
     },
-    itbms: {
+    precio: {
         type: Sequelize.NUMBER
     }
 }, {
     hooks: {
-        beforeValidate: async (venta, options) => {
-            if (!venta.venta_id) {
-                venta.venta_id = await getNextVentaId();
+        beforeValidate: async (detalle, options) => {
+            if (!detalle.detalle_id) {
+                detalle.detalle_id = await getNextDetalleId();
             }
         },
     },
 });
 
-export const getNextVentaId = async () => {
+export const getNextDetalleId = async () => {
     try {
-        const nextVenta = await Venta.findOne({
+        const nextDetalle = await DetalleVentaLibro.findOne({
             attributes: [
                 [Sequelize.fn('max', Sequelize.col('libro_id')), 'maxID']
             ]
         });
 
-        const nextId = nextVenta ? parseInt(nextVenta.get('maxID')) + 1 : 1;
+        const nextId = nextDetalle ? parseInt(nextDetalle.get('maxID')) + 1 : 1;
         return nextId;
     } catch (error) {
         console.error('Error al obtener la siguiente llave primaria:', error);

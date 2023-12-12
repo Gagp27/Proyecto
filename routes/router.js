@@ -5,7 +5,7 @@ import { findAllClientes, findClienteById, updateClienteById, deleteClienteById,
 import { findAllFormasPago, findFormaPagoById, updateFormaPagoById, deleteFormaPagoById, createFormaPago } from "../controllers/FormasPagoController.js";
 import { findAllGeneros, findGeneroById, updateGeneroById, deleteGeneroById, createGenero } from "../controllers/GenerosController.js";
 import { findAllLibros, findLibroById, updateLibroById, deleteLibroById, createLibro } from "../controllers/LibrosController.js";
-
+import { findAllVenta, findVentaById, createVenta, actualizarVenta, deleteVenta, paseHistorial, finAllHistorial } from "../controllers/VentasController.js";
 
 
 const router = express.Router();
@@ -48,9 +48,14 @@ router.post('/libros', createLibro);
 router.post('/libros/:id', updateLibroById);
 router.get('/libros/delete/:id', deleteLibroById);
 
-//CRUD Ventas
-router.get('/ventas', findAllVenta);
-router.get('/venta/:id', findVentaById);
+//CRUD Ordenes de Ventas
+router.get('/ordenes-ventas', findAllVenta);
+router.get('/ordenes-ventas/:id', findVentaById);
+router.post('/ordenes-ventas', createVenta);
+router.post('/ordenes-ventas/:id', actualizarVenta);
+router.get('/ordenes-ventas/delete/:id', deleteVenta);
 
+router.get('/orden-to-historial/:id', paseHistorial);
+router.get('/historial-ventas', finAllHistorial);
 
 export default router;
