@@ -30,8 +30,8 @@ export const Transaccion = db.define('transacciones', {
 }, {
     hooks: {
         beforeValidate: async (transaccion, options) => {
-            if (!transaccion.venta_id) {
-                transaccion.venta_id = await getNextTransaccionId();
+            if (!transaccion.transaccion_id) {
+                transaccion.transaccion_id = await getNextTransaccionId();
             }
         },
     },
@@ -41,11 +41,15 @@ export const getNextTransaccionId = async () => {
     try {
         const nextTransaccion = await Transaccion.findOne({
             attributes: [
-                [Sequelize.fn('max', Sequelize.col('libro_id')), 'maxID']
+                [Sequelize.fn('max', Sequelize.col('transaccion_id')), 'maxID']
             ]
         });
 
-        const nextId = nextTransaccion ? parseInt(nextTransaccion.get('maxID')) + 1 : 1;
+        let nextId = nextTransaccion ? parseInt(nextTransaccion.get('maxID')) + 1 : 1;
+        console.log(nextId);
+        if (isNaN(nextId)) {
+            nextId = 1;
+        }
         return nextId;
     } catch (error) {
         console.error('Error al obtener la siguiente llave primaria:', error);

@@ -1,3 +1,9 @@
+/*
+    Se esta utilizando una arquitectura de modelo vista controlador en este archivo se definen las rutas y sus respectivos controladores
+    importamos express para poder acceder al objeto router
+    importamos todos los metodos controladores
+ */
+
 import express from 'express';
 import { inicio } from '../controllers/PaginasController.js';
 import { findAllAutores, findAutorById, updateAutorById, deleteAutorById, createAutor } from "../controllers/AutoresController.js";
@@ -5,13 +11,16 @@ import { findAllClientes, findClienteById, updateClienteById, deleteClienteById,
 import { findAllFormasPago, findFormaPagoById, updateFormaPagoById, deleteFormaPagoById, createFormaPago } from "../controllers/FormasPagoController.js";
 import { findAllGeneros, findGeneroById, updateGeneroById, deleteGeneroById, createGenero } from "../controllers/GenerosController.js";
 import { findAllLibros, findLibroById, updateLibroById, deleteLibroById, createLibro } from "../controllers/LibrosController.js";
-import { findAllVenta, findVentaById, createVenta, actualizarVenta, deleteVenta, paseHistorial, finAllHistorial } from "../controllers/VentasController.js";
+import { findAllVenta, createVenta, deleteVenta, paseHistorial, finAllHistorial, loadCreateOrdenVenta, findVentaById } from "../controllers/VentasController.js";
 
 
-const router = express.Router();
+const router = express.Router(); // inicializamos el objeto de router
 
 // Rutas contenido estático
 router.get('/', inicio);
+
+
+/* Definimos las rutas del sistema */
 
 // CRUD Cliente
 router.get('/clientes', findAllClientes);
@@ -49,12 +58,11 @@ router.post('/libros/:id', updateLibroById);
 router.get('/libros/delete/:id', deleteLibroById);
 
 //CRUD Ordenes de Ventas
-router.get('/ordenes-ventas', findAllVenta);
-router.get('/ordenes-ventas/:id', findVentaById);
-router.post('/ordenes-ventas', createVenta);
-router.post('/ordenes-ventas/:id', actualizarVenta);
-router.get('/ordenes-ventas/delete/:id', deleteVenta);
-
+router.get('/ventas', findAllVenta);
+router.get('/orden-ventas/:id', findVentaById);
+router.get('/orden-ventas', loadCreateOrdenVenta);
+router.post('/orden-ventas', createVenta);
+router.get('/orden-ventas/delete/:id', deleteVenta);
 router.get('/orden-to-historial/:id', paseHistorial);
 router.get('/historial-ventas', finAllHistorial);
 

@@ -38,11 +38,14 @@ export const getNextDetalleId = async () => {
     try {
         const nextDetalle = await DetalleVentaLibro.findOne({
             attributes: [
-                [Sequelize.fn('max', Sequelize.col('libro_id')), 'maxID']
+                [Sequelize.fn('max', Sequelize.col('detalle_id')), 'maxID']
             ]
         });
 
-        const nextId = nextDetalle ? parseInt(nextDetalle.get('maxID')) + 1 : 1;
+        let nextId = nextDetalle ? parseInt(nextDetalle.get('maxID')) + 1 : 1;
+        if (isNaN(nextId)) {
+            nextId = 1;
+        }
         return nextId;
     } catch (error) {
         console.error('Error al obtener la siguiente llave primaria:', error);

@@ -1,0 +1,179 @@
+extends index
+block contenido
+    .mt-5.px-5
+        h1.pt-5.pb-3.text-center Orden de Venta
+
+        if (showSuccess)
+            .alert.alert-success(role='alert') #{alertMsg}
+        else if (showDanger)
+            .alert.alert-danger(role='alert') #{alertMsg}
+        else if (showWarning)
+            .alert.alert-warning(role='alert') #{alertMsg}
+
+        .row
+            .row
+                form.d-flex.gap-4(method='post', id='ordenForm')
+                    .row.border.p-3.rounded-4
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='cliente', class='form-label') Cliente:
+                                select.form-select(aria-label='cliente' id='cliente' name='cliente' disabled=true)
+                                    if ventaEdit.venta_id === null
+                                        option(selected) - Seleccione -
+                                    each cliente in clientes
+                                        if ventaEdit.cliente_id === cliente.cliente_id
+                                            option(value=cliente.cliente_id selected) #{cliente.email}
+                                        else
+                                            option(value=cliente.cliente_id) #{cliente.email}
+                            else
+                                label.fw-bold(for='cliente', class='form-label') Cliente:
+                                select.form-select(aria-label='cliente' id='cliente' name='cliente')
+                                    if ventaEdit.venta_id === null
+                                        option(selected) - Seleccione -
+                                    each cliente in clientes
+                                        if ventaEdit.cliente_id === cliente.cliente_id
+                                            option(value=cliente.cliente_id selected) #{cliente.email}
+                                        else
+                                            option(value=cliente.cliente_id) #{cliente.email}
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='fecha', class='form-label') Fecha:
+                                input(type='date', class='form-control', id='fecha' name='fecha' value=ventaEdit.fecha_hora disabled=true)
+                            else
+                                label.fw-bold(for='fecha', class='form-label') Fecha:
+                                input(type='date', class='form-control', id='fecha' name='fecha' value=ventaEdit.fecha_hora)
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='total', class='form-label') Total:
+                                input(type='text', class='form-control', id='total' name='total' value=ventaEdit.total disabled=true)
+                            else
+                                label.fw-bold(for='total', class='form-label') Total:
+                                input(type='text', class='form-control', id='total' name='total' value=ventaEdit.total)
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='forma_de_pago', class='form-label') Forma de Pago:
+                                select.form-select(aria-label='forma_de_pago' id='forma_de_pago' name='forma_de_pago' disabled=true)
+                                    if ventaEdit.venta_id === null
+                                        option(selected) - Seleccione -
+                                    each formaPago in formasPago
+                                        if ventaEdit.forma_de_pago === formaPago.forma_pago_id
+                                            option(value=formaPago.forma_pago_id selected) #{formaPago.nombre}
+                                        else
+                                            option(value=formaPago.forma_pago_id) #{formaPago.nombre}
+                            else
+                                label.fw-bold(for='forma_de_pago', class='form-label') Forma de Pago:
+                                select.form-select(aria-label='forma_de_pago' id='forma_de_pago' name='forma_de_pago')
+                                    if ventaEdit.venta_id === null
+                                        option(selected) - Seleccione -
+                                    each formaPago in formasPago
+                                        if ventaEdit.forma_de_pago === formaPago.forma_pago_id
+                                            option(value=formaPago.forma_pago_id selected) #{formaPago.nombre}
+                                        else
+                                            option(value=formaPago.forma_pago_id) #{formaPago.nombre}
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='monto_pagado', class='form-label') Monto Pagado:
+                                input(type='text', class='form-control', id='monto_pagado' name='monto_pagado' value=ventaEdit.monto_pagado disabled=true)
+                            else
+                                label.fw-bold(for='monto_pagado', class='form-label') Monto Pagado:
+                                input(type='text', class='form-control', id='monto_pagado' name='monto_pagado' value=ventaEdit.monto_pagado)
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='vuelto', class='form-label') Vuelto:
+                                input(type='text', class='form-control', id='vuelto' name='vuelto' value=ventaEdit.vuelto disabled=true)
+                            else
+                                label.fw-bold(for='vuelto', class='form-label') Vuelto:
+                                input(type='text', class='form-control', id='vuelto' name='vuelto' value=ventaEdit.vuelto)
+                        .mb-3
+                            if (edit)
+                                label.fw-bold(for='itbms', class='form-label') Itbms:
+                                input(type='text', class='form-control', id='itbms' name='itbms' value=ventaEdit.itbms disabled=true)
+                            else
+                                label.fw-bold(for='itbms', class='form-label') Itbms:
+                                input(type='text', class='form-control', id='itbms' name='itbms' value=ventaEdit.itbms)
+                        .d-flex.gap-2
+                            if (!edit)
+                                button.btn.btn-primary(type='button', id='submitBtn') Crear Orden
+                            if (showDelete)
+                                a.btn.btn-danger(href=`/orden-ventas/delete/${ventaEdit.venta_id}`) Eliminar
+                            if (edit)
+                                a.btn.btn-success(href=`/orden-to-historial/${ventaEdit.venta_id}`) Aprobar
+                            if (edit)
+                                a.btn.border-1.border-black(href='/ventas') Cancelar
+
+                    // Agrega la tabla de libros para la selección de cantidades
+                    if(!edit)
+                        table.table.table-striped
+                            thead.table-dark
+                                tr
+                                    th.col-1(scope='col') #
+                                    th.col-2(scope='col') Titulo
+                                    th.col-1(scope='col') Precio
+                                    th.col-2(scope='col') Stock
+                                    th.col-2(scope='col') Cantidad a Comprar
+                            tbody.table-group-divider
+                                each libro in libros
+                                    tr
+                                        th.col-1(scope='row') #{libro.libro_id}
+                                        td.col-2 #{libro.titulo}
+                                        td.col-1 #{parseFloat(libro.precio).toFixed(2)}
+                                        td.col-2 #{libro.cantidad_stock}
+                                        td.col-2
+                                            input(type='number', name=`cantidades[${libro.libro_id}]`, min='0', value='0', class='cantidad-input')
+                    else
+                        table.table.table-striped
+                            thead.table-dark
+                                tr
+                                    th(scope='col') Titulo
+                                    th(scope='col') Cantidad
+                                    th(scope='col') Precio
+                                    th(scope='col') Precio Unitario
+                                    th(scope='col') Itbms por libro
+                            tbody.table-group-divider
+                                each vLibro in ventaLibro
+                                    tr
+                                        - let libroEncontrado = libros.find(libro => libro.libro_id === vLibro.libro_id)
+                                        td #{libroEncontrado ? libroEncontrado.titulo : 'No especificado'}
+                                        td #{vLibro.cantidad}
+                                        td #{parseFloat(vLibro.precio).toFixed(2)}
+                                        td #{parseFloat(vLibro.precio_unitario).toFixed(2)}
+                                        td #{parseFloat(vLibro.itbms_por_libro).toFixed(2)}
+
+    // Agrega un script JavaScript para manejar la interactividad del formulario
+    script.
+        document.addEventListener('DOMContentLoaded', function () {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.addEventListener('click', function () {
+                const cantidades = [];
+
+                // Iterar sobre los elementos del formulario con la clase 'cantidad-input'
+                const cantidadInputs = document.querySelectorAll('.cantidad-input');
+                cantidadInputs.forEach(function (input) {
+                    const libroId = input.name.match(/\[(\d+)\]/)[1];
+                    const cantidad = parseInt(input.value, 10);
+
+                    if (cantidad > 0) {
+                        cantidades.push({ libroId, cantidad });
+                    }
+                });
+
+                // Agregar las cantidades como un campo oculto al formulario
+                let cantidadesInput = document.getElementById('cantidades');
+
+                if (!cantidadesInput) {
+                    cantidadesInput = document.createElement('input');
+                    cantidadesInput.type = 'hidden';
+                    cantidadesInput.name = 'cantidades';
+                    cantidadesInput.id = 'cantidades';
+                }
+
+                cantidadesInput.value = JSON.stringify(cantidades);
+
+                // Agregar el campo oculto al formulario
+                const ordenForm = document.getElementById('ordenForm');
+                ordenForm.appendChild(cantidadesInput);
+
+                // Realizar la acción de submit después de agregar el campo oculto
+                ordenForm.submit();
+            });
+        });

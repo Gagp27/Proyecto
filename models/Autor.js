@@ -1,3 +1,7 @@
+/*
+    Mapeo de la tabla Autores en la base de datos se define cada una de las columnas y su tipo de dato, se debe pasar el objeto de la conexión.
+    Por medio del hooks y la función getNextAutorId se desarrollo la logica que obtiene la siguiente llave para insertar.
+ */
 import Sequelize from 'sequelize';
 import { db } from '../config/db.js';
 

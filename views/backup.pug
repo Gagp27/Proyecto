@@ -1,0 +1,71 @@
+extends index
+block contenido
+    .mt-5.px-5
+        h1.pt-5.pb-3.text-center Orden de Venta
+
+        if (showSuccess)
+            .alert.alert-success(role='alert') #{alertMsg}
+        else if (showDanger)
+            .alert.alert-danger(role='alert') #{alertMsg}
+        else if (showWarning)
+            .alert.alert-warning(role='alert') #{alertMsg}
+
+        .d-flex.gap-4
+            .col-3
+                form.border.p-3.rounded-4(method='post')
+                    .mb-3
+                        label.fw-bold(for='cliente', class='form-label') Cliente:
+                        select.form-select(aria-label='cliente' id='cliente' name='cliente')
+                            if ventaEdit.venta_id === null
+                                option(selected) - Seleccione -
+                            each cliente in clientes
+                                if ventaEdit.cliente_id === cliente.cliente_id
+                                    option(value=cliente.cliente_id selected) #{cliente.email}
+                                else
+                                    option(value=cliente.cliente_id) #{cliente.email}
+                    .mb-3
+                        label.fw-bold(for='fecha', class='form-label') Fecha:
+                        input(type='date', class='form-control', id='fecha' name='fecha' value=ventaEdit.fecha_hora)
+                    .mb-3
+                        label.fw-bold(for='total', class='form-label') Total:
+                        input(type='text', class='form-control', id='total' name='total' value=ventaEdit.total)
+                    .mb-3
+                        label.fw-bold(for='forma_de_pago', class='form-label') Forma de Pago:
+                        select.form-select(aria-label='forma_de_pago' id='forma_de_pago' name='forma_de_pago')
+                            if ventaEdit.venta_id === null
+                                option(selected) - Seleccione -
+                            each formaPago in formasPago
+                                if ventaEdit.forma_de_pago === formaPago.forma_pago_id
+                                    option(value=formaPago.forma_pago_id selected) #{formaPago.nombre}
+                                else
+                                    option(value=formaPago.forma_pago_id) #{formaPago.nombre}
+                    .mb-3
+                        label.fw-bold(for='monto_pagado', class='form-label') Monto Pagado:
+                        input(type='text', class='form-control', id='monto_pagado' name='total' value=ventaEdit.monto_pagado)
+                    .mb-3
+                        label.fw-bold(for='vuelto', class='form-label') Vuelto:
+                        input(type='text', class='form-control', id='vuelto' name='vuelto' value=ventaEdit.vuelto)
+                    .mb-3
+                        label.fw-bold(for='itbms', class='form-label') Itbms:
+                        input(type='text', class='form-control', id='itbms' name='itbms' value=ventaEdit.itbms)
+                    .d-flex.gap-2
+                        button.btn.btn-primary(type='submit') Submit
+                        if (showDelete)
+                            a.btn.btn-danger(href=`/libros/delete/${libroEdit.libro_id}`) Eliminar
+                        if (edit)
+                            a.btn.border-1.border-black(href='/libros') Cancelar
+
+            table.table.table-striped
+                thead.table-dark
+                    tr
+                        th.col-1(scope='col') #
+                        th.col-1(scope='col') Titulo
+                        th.col-1(scope='col') Precio
+                        th.col-1(scope='col') Stock
+                tbody.table-group-divider
+                    each libro in libros
+                        tr
+                            th.col-1(scope='row') #{libro.libro_id}
+                            td.col-1 #{libro.titulo}
+                            td.col-1 #{parseFloat(libro.precio).toFixed(2)}
+                            td.col-1 #{libro.cantidad_stock}

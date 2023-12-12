@@ -1,16 +1,30 @@
 extends index
 block contenido
-    h1.pt-5.pb-3.text-center Historial de Ventas
-    table.table.table-striped
-    thead.table-dark
-        tr
-            th.col-1(scope='col') #
-            th.col-9(scope='col') Genero
-            th.col-1(scope='col')
-    tbody.table-group-divider
-        each genero in generos
-            tr
-                th.col-1(scope='row') #{genero.genero_id}
-                td.col-9 #{genero.genero}
-                td.col-1.text-center
-                    a.btn.btn-warning.btn-sm(href=`/generos/${genero.genero_id}`) Editar
+    .p-5
+        h1.mt-5.pb-3.text-center Historial de Ventas
+        table.table.table-striped
+            thead.table-dark
+                tr
+                    th(scope='col') #
+                    th(scope='col') ID venta
+                    th(scope='col') total
+                    th(scope='col') fecha
+                    th(scope='col') Forma de Pago
+                    th(scope='col') Monto Pagado
+                    th(scope='col') Vuelto
+                    th(scope='col') Itbms
+                    th(scope='col') Libros
+            tbody.table-group-divider
+                each his in historial
+                    tr
+                        th(scope='row') #{his.transaccion_id}
+                        th(scope='row') #{his.venta_id}
+                        th(scope='row') #{his.total}
+                        th(scope='row') #{his.fecha}
+                        th(scope='row') #{his.forma_de_pago}
+                        th(scope='row') #{his.monto_pagado}
+                        th(scope='row') #{his.vuelto}
+                        th(scope='row') #{his.itbms}
+                        th(scope='row')
+                            each det in detalle
+                                #{det.libro_id}

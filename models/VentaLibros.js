@@ -4,9 +4,11 @@ import Sequelize from "sequelize";
 export const VentaLibros = db.define('ventas_libros', {
     venta_id: {
         type: Sequelize.NUMBER,
+        primaryKey: true
     },
     libro_id: {
         type: Sequelize.NUMBER,
+        primaryKey: true
     },
     cantidad: {
         type: Sequelize.NUMBER,

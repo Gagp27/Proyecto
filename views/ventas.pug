@@ -1,0 +1,32 @@
+extends index
+block contenido
+    .mt-5.px-5
+        h1.pt-5.pb-3.text-center Listado de Ordenes de Venta
+        a.btn.btn-info.mb-3(href='/orden-ventas') Nueva Orden
+        table.table.table-striped
+            thead.table-dark
+                tr
+                    th(scope='col') #
+                    th(scope='col') Cliente
+                    th(scope='col') Fecha
+                    th(scope='col') Total
+                    th(scope='col') Forma de Pago
+                    th(scope='col') Monto Pagado
+                    th(scope='col') Vuelto
+                    th(scope='col') ITBMS
+                    th(scope='col')
+            tbody.table-group-divider
+                each venta in ventas
+                    tr
+                        th(scope='row') #{venta.venta_id}
+                        - let clienteEncontrado = clientes.find(cliente => cliente.cliente_id === venta.cliente_id)
+                        td #{clienteEncontrado ? clienteEncontrado.nombre : 'No especificado'}
+                        td #{venta.fecha_hora}
+                        td #{parseFloat(venta.total).toFixed(2)}
+                        - let formaPagoEncontrado = formasPago.find(formaPago => formaPago.forma_pago_id === venta.forma_pago_id)
+                        td #{formaPagoEncontrado ? formaPagoEncontrado.nombre : 'No especificado'}
+                        td #{parseFloat(venta.monto_pagado).toFixed(2)}
+                        td #{parseFloat(venta.vuelto).toFixed(2)}
+                        td #{parseFloat(venta.itbms).toFixed(2)}
+                        td.text-center
+                            a.btn.btn-warning.btn-sm(href=`/orden-ventas/${venta.venta_id   }`) Editar
