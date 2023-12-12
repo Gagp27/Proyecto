@@ -1,0 +1,38 @@
+extends index
+block contenido
+    .mt-5.px-5
+        h1.pt-5.pb-3.text-center Formas de Pago
+
+        if (showSuccess)
+            .alert.alert-success(role='alert') #{alertMsg}
+        else if (showDanger)
+            .alert.alert-danger(role='alert') #{alertMsg}
+        else if (showWarning)
+            .alert.alert-warning(role='alert') #{alertMsg}
+
+        .d-flex.gap-4
+                .col-5
+                    form.border.p-3.rounded-4(method='post')
+                        .mb-3
+                            label.fw-bold(for='nombre', class='form-label') Forma de Pago:
+                            input(type='text', class='form-control', id='nombre' name='nombre' value=FormaPagoEdit.nombre)
+                        .d-flex.gap-2
+                            button.btn.btn-primary(type='submit') Submit
+                            if (showDelete)
+                                a.btn.btn-danger(href=`/formas-de-pago/delete/${FormaPagoEdit.forma_pago_id}`) Eliminar
+                            if (edit)
+                                a.btn.border-1.border-black(href='/formas-de-pago') Cancelar
+
+                table.table.table-striped
+                    thead.table-dark
+                        tr
+                            th.col-1(scope='col') #
+                            th.col-9(scope='col') Nombre
+                            th.col-1(scope='col')
+                    tbody.table-group-divider
+                        each formaPago in formasPago
+                            tr
+                                th.col-1(scope='row') #{formaPago.forma_pago_id}
+                                td.col-9 #{formaPago.nombre}
+                                td.col-1.text-center
+                                    a.btn.btn-warning.btn-sm(href=`/formas-de-pago/${formaPago.forma_pago_id}`) Editar

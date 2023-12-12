@@ -1,0 +1,89 @@
+extends index
+block contenido
+    .mt-5.px-5
+        h1.pt-5.pb-3.text-center Libros
+
+        if (showSuccess)
+            .alert.alert-success(role='alert') #{alertMsg}
+        else if (showDanger)
+            .alert.alert-danger(role='alert') #{alertMsg}
+        else if (showWarning)
+            .alert.alert-warning(role='alert') #{alertMsg}
+
+        .d-flex.gap-4
+                .col-3
+                    form.border.p-3.rounded-4(method='post')
+                        .mb-3
+                            label.fw-bold(for='titulo', class='form-label') Titulo:
+                            input(type='text', class='form-control', id='titulo' name='titulo' value=libroEdit.titulo)
+                        .mb-3
+                            label.fw-bold(for='genero', class='form-label') Genero:
+                            select.form-select(aria-label='Genero' id='genero' name='genero')
+                                if libroEdit.genero_id === null
+                                    option(selected) - Seleccione -
+                                each genero in generos
+                                    if libroEdit.genero_id === genero.genero_id
+                                        option(value=genero.genero_id selected) #{genero.genero}
+                                    else
+                                        option(value=genero.genero_id) #{genero.genero}
+                        .mb-3
+                            label.fw-bold(for='autor', class='form-label') Autor:
+                            select.form-select(aria-label='Autor' id='autor' name='autor')
+                                if libroEdit.autor_id === null
+                                    option(selected) - Seleccione -
+                                each autor in autores
+                                    if libroEdit.autor_id === autor.autor_id
+                                        option(value=autor.autor_id selected) #{autor.nombre}
+                                    else
+                                        option(value=autor.autor_id) #{autor.nombre}
+                        .mb-3
+                            label.fw-bold(for='precio', class='form-label') Precio:
+                            input(type='text', class='form-control', id='precio' name='precio' value=libroEdit.precio)
+                        .mb-3
+                            label.fw-bold(for='stock', class='form-label') Stock:
+                            input(type='text', class='form-control', id='stock' name='stock' value=libroEdit.cantidad_stock)
+                        .mb-3
+                            label.fw-bold(for='fecha', class='form-label') Fecha Pubicación:
+                            input(type='date', class='form-control', id='fecha' name='fecha' value=libroEdit.fecha_publicacion)
+                        //.mb-3
+                        //    label.fw-bold(for='imagen', class='form-label') Imagen:
+                        //    input(type='text', class='form-control', id='imagen' name='imagen' value=libroEdit.imagen)
+                        .mb-3
+                            label.fw-bold(for='descripcion', class='form-label') Descripción:
+                            textarea.form-control(id='descripcion', name='descripcion') #{libroEdit.descripcion}
+                        .d-flex.gap-2
+                            button.btn.btn-primary(type='submit') Submit
+                            if (showDelete)
+                                a.btn.btn-danger(href=`/libros/delete/${libroEdit.libro_id}`) Eliminar
+                            if (edit)
+                                a.btn.border-1.border-black(href='/libros') Cancelar
+
+                table.table.table-striped
+                    thead.table-dark
+                        tr
+                            th.col-1(scope='col') #
+                            th.col-1(scope='col') Titulo
+                            th.col-1(scope='col') Genero
+                            th.col-1(scope='col') Autor
+                            th.col-1(scope='col') Precio
+                            th.col-1(scope='col') Stock
+                            th.col-1(scope='col') Fecha Pubicación
+                            //th.col-1(scope='col') Imagen
+                            th.col-4(scope='col') Descripción
+                            th.col-1(scope='col')
+                    tbody.table-group-divider
+                        each libro in libros
+                            tr
+                                th.col-1(scope='row') #{libro.libro_id}
+                                td.col-1 #{libro.titulo}
+                                - let generoEncontrado = generos.find(genero => genero.genero_id === libro.genero_id)
+                                td.col-1 #{generoEncontrado ? generoEncontrado.genero : 'No especificado'}
+                                - let autorEncontrado = autores.find(autor => autor.autor_id === libro.autor_id)
+                                td.col-1 #{autorEncontrado ? autorEncontrado.nombre : 'No especificado'}
+                                td.col-1 #{parseFloat(libro.precio).toFixed(2)}
+                                td.col-1 #{libro.cantidad_stock}
+                                td.col-1 #{libro.fecha_publicacion}
+                                //td.col-1 #{libro.imagen}
+                                td.col-4 #{libro.descripcion}
+                                td.col-1.text-center
+                                    a.btn.btn-warning.btn-sm(href=`/libros/${libro.libro_id}`) Editar
