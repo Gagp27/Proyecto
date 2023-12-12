@@ -48,5 +48,9 @@ router.post('/libros', createLibro);
 router.post('/libros/:id', updateLibroById);
 router.get('/libros/delete/:id', deleteLibroById);
 
+//CRUD Ventas
+router.get('/ventas', findAllVenta);
+router.get('/venta/:id', findVentaById);
+
 
 export default router;

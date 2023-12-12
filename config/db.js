@@ -1,8 +1,8 @@
 import Sequelize from 'sequelize';
 
-export const db = new Sequelize('postgres', 'yalabarca', '30252700', {
-    host: '104.196.101.85',
-    port: 5432,
+export const db = new Sequelize(process.env.DATABASE_NAME, process.env.DATABASE_USER, process.env.DATABASE_PASS, {
+    host: process.env.DATABASE_HOST,
+    port: process.env.DATABASE_PORT,
     dialect: 'postgres',
     define: {
         timestamps: false
